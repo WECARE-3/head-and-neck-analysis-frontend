@@ -10,7 +10,7 @@ const IndexPage = () => {
   const isLoggedIn = useRecoilValue(loginState)
   const user = useRecoilValue(userState)
 
-  const [file, setFile] = useState('')
+  const [files, setFiles] = useState({})
   const [image, setImage] = useState('')
   const [response, setResponse] = useState({})
 
@@ -21,14 +21,18 @@ const IndexPage = () => {
   }, [isLoggedIn])
 
   function onFileChange({ target: { files } }) {
-    console.log(files[0])
-    setFile(files[0])
+    console.log(files)
+
+    setFiles(files)
     setImage(URL.createObjectURL(files[0]))
   }
 
   async function onSubmit() {
     const formData = new FormData()
-    formData.append('image', file)
+    for (let i = 0; i < files.length; i++) {
+      console.log(files[i])
+      formData.append('images', files[i])
+    }
     setResponse(
       await axios.post('http://localhost:8000/api/analyze-images/', formData)
     )
@@ -52,7 +56,14 @@ const IndexPage = () => {
               <path d='M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z' />
             </svg>
             <span className='mt-2 text-base leading-normal'>Select a file</span>
-            <input type='file' className='hidden' onChange={onFileChange} />
+            <input
+              type='file'
+              className='hidden'
+              onChange={onFileChange}
+              webkitdirectory=''
+              mozdirectory=''
+              directory=''
+            />
           </label>
         </div>
         <div className='flex flex-col items-center justify-center my-4'>
