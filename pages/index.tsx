@@ -29,18 +29,34 @@ const IndexPage = () => {
 
   async function onSubmit() {
     const formData = new FormData()
-    for (let i = 0; i < files.length; i++) {
-      console.log(files[i])
-      formData.append('images', files[i])
-    }
-    setResponse(
-      await axios.post('http://localhost:8000/api/analyze-images/', formData)
-    )
+    // for (let i = 0; i < files.length; i++) {
+    //   formData.append('images', files[i])
+    // }
+    // setResponse(
+    //   await axios.post('http://localhost:8000/api/analyze-images/', formData)
+    // )
     console.log(response)
+
+    router.push({
+      pathname: '/result',
+      query: {
+        id: 'HN1004',
+        clin_t_1: 0.1,
+        clin_t_2: 0.1,
+        clin_t_3: 0.1,
+        clin_t_4: 0.1,
+        clin_n_0: 0.1,
+        clin_n_1: 0.1,
+        clin_n_2: 0.1,
+        clin_n_3: 0.1,
+        clin_m_0: 0.1,
+        clin_m_1: 0.1,
+      },
+    })
   }
 
   return (
-    <div>
+    <>
       <div className='py-20'>
         <h1 className='text-5xl text-center text-gray-100'>
           Hello {user.username}!
@@ -67,16 +83,16 @@ const IndexPage = () => {
           </label>
         </div>
         <div className='flex flex-col items-center justify-center my-4'>
-          <img src={image} />
+          {image && <img src='/example_dicom.png' />}
           <button
-            className='w-32 px-4 py-6 bg-transparent rounded-full border-2 border-teal-700 text-teal-700'
+            className='w-32 my-4 px-4 py-6 bg-transparent rounded-full border-2 border-teal-700 text-teal-700'
             onClick={onSubmit}
           >
             Submit
           </button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
