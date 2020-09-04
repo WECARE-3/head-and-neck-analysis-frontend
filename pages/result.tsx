@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 import { floatToPercent } from '../utils/numbers'
-import { ParsedUrlQuery } from 'querystring'
 
 const ResultPage = () => {
   const router = useRouter()
@@ -17,14 +16,10 @@ const ResultPage = () => {
 
   const {
     id,
-    clin_t_1,
-    clin_t_2,
     clin_t_3,
     clin_t_4,
     clin_n_0,
-    clin_n_1,
     clin_n_2,
-    clin_n_3,
     clin_m_0,
     clin_m_1,
   } = router.query
@@ -61,48 +56,64 @@ const ResultPage = () => {
                 <tbody className='bg-gray-800 text-center'>
                   <tr>
                     <td className='border px-4 py-2'>T</td>
-                    <td className='border px-4 py-2'>
-                      {floatToPercent(Number(clin_t_1))}
-                    </td>
-                    <td className='border px-4 py-2'>
-                      {floatToPercent(Number(clin_t_2))}
-                    </td>
-                    <td className='border px-4 py-2'>
-                      {floatToPercent(Number(clin_t_3))}
+                    <td className='border px-4 py-2 text-bold text-teal-500'>
+                      4
                     </td>
                     <td className='border px-4 py-2'>
                       {floatToPercent(Number(clin_t_4))}
                     </td>
+                    <td className='border px-4 py-2 text-bold text-teal-500'>
+                      3
+                    </td>
+                    <td className='border px-4 py-2'>
+                      {floatToPercent(Number(clin_t_3))}
+                    </td>
                   </tr>
                   <tr>
                     <td className='border px-4 py-2'>N</td>
-                    <td className='border px-4 py-2'>
-                      {floatToPercent(Number(clin_n_0))}
-                    </td>
-                    <td className='border px-4 py-2'>
-                      {floatToPercent(Number(clin_n_1))}
+                    <td className='border px-4 py-2 text-bold text-teal-500'>
+                      2
                     </td>
                     <td className='border px-4 py-2'>
                       {floatToPercent(Number(clin_n_2))}
                     </td>
+                    <td className='border px-4 py-2 text-bold text-teal-500'>
+                      0
+                    </td>
                     <td className='border px-4 py-2'>
-                      {floatToPercent(Number(clin_n_3))}
+                      {floatToPercent(Number(clin_n_0))}
                     </td>
                   </tr>
                   <tr>
                     <td className='border px-4 py-2'>M</td>
-                    <td className='border px-4 py-2' colSpan={2}>
+                    <td className='border px-4 py-2 text-bold text-teal-500'>
+                      0
+                    </td>
+                    <td className='border px-4 py-2'>
                       {floatToPercent(Number(clin_m_0))}
                     </td>
-                    <td className='border px-4 py-2' colSpan={2}>
+                    <td className='border px-4 py-2 text-bold text-teal-500'>
+                      1
+                    </td>
+                    <td className='border px-4 py-2'>
                       {floatToPercent(Number(clin_m_1))}
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <p className='text-gray-100'>
-                {id}님의 모의진단 결과, T() N() M()이므로, 현재
-              </p>
+              <div className='text-gray-100 text-xl'>
+                <span className='italic'>{id}</span>님의 TNM 모의진단 결과,{' '}
+                <span className='text-teal-500 font-bold'>
+                  {' '}
+                  T ( 4 ) / N ( 2 ) / M ( 0 )
+                </span>
+                이므로, 현재 AJCC Step은 현재{' '}
+                <span className='text-teal-500 font-bold'>IV a기</span>로 진행될
+                가능성이
+                <span className='text-teal-500 font-bold'> 77%</span>입니다.
+                재발 가능성은 현재{' '}
+                <span className='text-teal-500 font-bold'>65.2%</span>입니다.
+              </div>
             </div>
           </div>
           {/* Right side */}
@@ -116,29 +127,75 @@ const ResultPage = () => {
             className='mb-8 px-8 py-6 bg-transparent rounded-full border-2 border-teal-700 text-teal-700 cursor-pointer hover:bg-blue hover:bg-gray-800'
             onClick={onClickMoreinfo}
           >
-            Enter more info...
+            More info...
           </button>
-          {/* {openMoreinfo && (
-            <div className='grid gap-8 grid-cols-2 w-full'>
-              <div className='col-span-1 w-full'>
-                <h1 className='text-3xl text-gray-100 mb-4'>
-                  Radiation therapy
-                </h1>
-                <div className='flex items-center'>
-                  <label className='w-16 text-gray-200 font-bold text-right mb-1 pr-4'>
-                    정보1
-                  </label>
-                  <input
-                    className='bg-gray-700 appearance-none border-2 border-gray-700 rounded w-full py-2 px-4 text-gray-200 leading-tight focus:outline-none focus:bg-gray-900 focus:border-teal-400'
-                    type='text'
-                  />
+          {openMoreinfo && (
+            <div className='w-full'>
+              <h1 className='text-3xl text-gray-100 text-left mb-2'>
+                Radiation therapy
+              </h1>
+              <h2 className='text-2xl text-gray-200 text-left mb-4'>
+                Radiation prediction:{' '}
+                <span className='text-teal-500'>69.81 Grey</span>
+              </h2>
+              <div className='grid gap-8 grid-cols-2 w-full'>
+                <div className='col-span-1 w-full'>
+                  <h4 className='text-xl text-gray-100'>Patient Data</h4>
+                  <table className='table-auto w-full my-2 bg-gray-800 text-gray-100'>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>
+                        Gender
+                      </td>
+                      <td>Male</td>
+                    </tr>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>
+                        Cancer location
+                      </td>
+                      <td>Oropharynx</td>
+                    </tr>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>Age</td>
+                      <td>56</td>
+                    </tr>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>
+                        Cancer Surgery
+                      </td>
+                      <td>NO</td>
+                    </tr>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>
+                        Chemotherapy
+                      </td>
+                      <td>concomitant</td>
+                    </tr>
+                  </table>
+                </div>
+                <div className='col-span-1 w-full'>
+                  <h4 className='text-xl text-gray-100'>Modeling Report</h4>
+                  <table className='table-auto w-full my-2 bg-gray-800 text-gray-100'>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>
+                        Methods
+                      </td>
+                      <td>Gradient Boosting</td>
+                    </tr>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>R^2</td>
+                      <td>Train 0.994 / Text 0.882</td>
+                    </tr>
+                    <tr>
+                      <td className='text-teal-500 font-bold px-2 py-4'>
+                        Mean Square Error
+                      </td>
+                      <td>0.005 / 0.936</td>
+                    </tr>
+                  </table>
                 </div>
               </div>
-              <div className='col-span-1 w-full'>
-                <h1 className='text-3xl text-gray-100 mb-4'>Chemotheraphy</h1>
-              </div>
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </>
